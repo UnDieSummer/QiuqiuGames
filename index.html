@@ -2,54 +2,270 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>旋涡吞噬 H5 小游戏</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>小游戏乐园</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* 背景粒子动画 */
+      .bg-particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .bg-particles span {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(148, 163, 184, 0.3);
+        border-radius: 50%;
+        animation: float 15s infinite ease-in-out;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+        33% { transform: translateY(-30px) translateX(20px); opacity: 0.8; }
+        66% { transform: translateY(20px) translateX(-20px); opacity: 0.5; }
+      }
+
+      /* 头部 */
+      header {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 48px 20px 32px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+      }
+
+      header p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+      }
+
+      /* 游戏卡片区域 */
+      main {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 20px 40px;
+        max-width: 480px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .game-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+
+      .game-card:active {
+        transform: scale(0.96);
+      }
+
+      .game-card:hover {
+        transform: translateY(-4px);
+      }
+
+      /* 龙卷风卡片 */
+      .card-tornado {
+        background: linear-gradient(145deg, #78350f 0%, #92400e 30%, #b45309 70%, #d97706 100%);
+        box-shadow: 0 10px 40px rgba(180, 83, 9, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+      }
+
+      /* 旋涡卡片 */
+      .card-whirlpool {
+        background: linear-gradient(145deg, #1e3a5f 0%, #1e40af 30%, #2563eb 70%, #3b82f6 100%);
+        box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+      }
+
+      .card-inner {
+        padding: 32px 28px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 装饰圆圈 */
+      .card-inner::before {
+        content: '';
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        opacity: 0.08;
+        top: -40px;
+        right: -40px;
+        border: 2px solid #fff;
+      }
+
+      .card-inner::after {
+        content: '';
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        opacity: 0.06;
+        bottom: -30px;
+        left: -20px;
+        border: 2px solid #fff;
+      }
+
+      .game-icon {
+        font-size: 3rem;
+        margin-bottom: 12px;
+        display: block;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      }
+
+      .game-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .game-desc {
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.75);
+        line-height: 1.5;
+      }
+
+      .play-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        padding: 10px 24px;
+        border-radius: 100px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid rgba(255,255,255,0.25);
+        transition: all 0.3s ease;
+      }
+
+      .game-card:hover .play-btn {
+        background: rgba(255,255,255,0.3);
+        transform: scale(1.05);
+      }
+
+      /* 底部 */
+      footer {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 20px;
+        color: #475569;
+        font-size: 0.75rem;
+      }
+
+      /* 进入动画 */
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      header, .game-card {
+        animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .game-card:nth-child(1) { animation-delay: 0.1s; }
+      .game-card:nth-child(2) { animation-delay: 0.25s; }
+    </style>
   </head>
   <body>
-    <main class="game-shell">
-      <canvas id="game" aria-label="旋涡吞噬小游戏"></canvas>
+    <!-- 背景粒子 -->
+    <div class="bg-particles" id="particles"></div>
 
-      <section class="hud" aria-label="游戏状态">
-        <div>
-          <span class="label">旋转</span>
-          <strong id="speed">1.0x</strong>
-        </div>
-        <div>
-          <span class="label">已吞噬</span>
-          <strong id="count">0</strong>
-        </div>
-        <div>
-          <span class="label">水色</span>
-          <strong id="paint">清澈</strong>
-        </div>
-        <button id="reset" type="button" aria-label="重新开始">↻</button>
-      </section>
+    <header>
+      <h1>🎮 小游戏乐园</h1>
+      <p>精选休闲小游戏，随时开玩</p>
+    </header>
 
-      <section class="controls" aria-label="游戏操作">
-        <button id="boost" class="boost" type="button">
-          <span class="button-icon speed-icon" aria-hidden="true"></span>
-          <span>加速</span>
-        </button>
-        <button data-drop="boat" type="button">
-          <span class="button-icon boat-icon" aria-hidden="true"></span>
-          <span>小船</span>
-        </button>
-        <button data-drop="balls" type="button">
-          <span class="button-icon balls-icon" aria-hidden="true"></span>
-          <span>海洋球</span>
-        </button>
-        <button data-drop="fish" type="button">
-          <span class="button-icon fish-icon" aria-hidden="true"></span>
-          <span>小鱼玩具</span>
-        </button>
-        <button data-drop="paint" type="button">
-          <span class="button-icon paint-icon" aria-hidden="true"></span>
-          <span>颜料</span>
-        </button>
-      </section>
+    <main>
+      <a href="./tornado-game/index.html" class="game-card card-tornado">
+        <div class="card-inner">
+          <span class="game-icon">🌪️</span>
+          <div class="game-title">龙卷风吞噬一切</div>
+          <div class="game-desc">操控狂暴龙卷风，席卷城市吞噬一切！体型越大，破坏力越强。</div>
+          <div class="play-btn">
+            <span>▶</span>
+            <span>立即开玩</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="./whirlpool-game/index.html" class="game-card card-whirlpool">
+        <div class="card-inner">
+          <span class="game-icon">🌀</span>
+          <div class="game-title">旋涡吞噬</div>
+          <div class="game-desc">化身为深海旋涡，吞噬海洋生物不断壮大，成为海洋霸主！</div>
+          <div class="play-btn">
+            <span>▶</span>
+            <span>立即开玩</span>
+          </div>
+        </div>
+      </a>
     </main>
 
-    <script src="./game.js"></script>
+    <footer>
+      H5 小游戏合集 · 点击卡片开始游戏
+    </footer>
+
+    <script>
+      // 生成背景粒子
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const span = document.createElement('span');
+        span.style.left = Math.random() * 100 + '%';
+        span.style.top = Math.random() * 100 + '%';
+        span.style.animationDelay = Math.random() * 15 + 's';
+        span.style.animationDuration = (10 + Math.random() * 10) + 's';
+        container.appendChild(span);
+      }
+    </script>
   </body>
 </html>
