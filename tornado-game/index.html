@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>龙卷风吞噬一切</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="hud" aria-label="游戏状态">
+        <div>
+          <span class="label">分数</span>
+          <strong id="score">0</strong>
+        </div>
+        <div>
+          <span class="label">体型</span>
+          <strong id="size">1.0x</strong>
+        </div>
+        <div>
+          <span class="label">剩余</span>
+          <strong id="ttl">--</strong>
+        </div>
+        <button id="restart" type="button" aria-label="重新开始">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </section>
+
+      <canvas id="game" aria-label="龙卷风吞噬小游戏"></canvas>
+
+      <section class="touch-pad" aria-label="移动控制">
+        <button data-dir="up" type="button" aria-label="向上">↑</button>
+        <div>
+          <button data-dir="left" type="button" aria-label="向左">←</button>
+          <button data-dir="down" type="button" aria-label="向下">↓</button>
+          <button data-dir="right" type="button" aria-label="向右">→</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

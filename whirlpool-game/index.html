@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>旋涡吞噬 H5 小游戏</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <canvas id="game" aria-label="旋涡吞噬小游戏"></canvas>
+
+      <section class="hud" aria-label="游戏状态">
+        <div>
+          <span class="label">旋转</span>
+          <strong id="speed">1.0x</strong>
+        </div>
+        <div>
+          <span class="label">已吞噬</span>
+          <strong id="count">0</strong>
+        </div>
+        <div>
+          <span class="label">水色</span>
+          <strong id="paint">清澈</strong>
+        </div>
+        <button id="reset" type="button" aria-label="重新开始">↻</button>
+      </section>
+
+      <section class="controls" aria-label="游戏操作">
+        <button id="boost" class="boost" type="button">
+          <span class="button-icon speed-icon" aria-hidden="true"></span>
+          <span>加速</span>
+        </button>
+        <button data-drop="boat" type="button">
+          <span class="button-icon boat-icon" aria-hidden="true"></span>
+          <span>小船</span>
+        </button>
+        <button data-drop="balls" type="button">
+          <span class="button-icon balls-icon" aria-hidden="true"></span>
+          <span>海洋球</span>
+        </button>
+        <button data-drop="fish" type="button">
+          <span class="button-icon fish-icon" aria-hidden="true"></span>
+          <span>小鱼玩具</span>
+        </button>
+        <button data-drop="paint" type="button">
+          <span class="button-icon paint-icon" aria-hidden="true"></span>
+          <span>颜料</span>
+        </button>
+      </section>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>
